@@ -1,5 +1,4 @@
 import images from "./images";
-import positions from "./avatar-position";
 import tippy from 'tippy.js';
 import FileSaver from "file-saver";
 import ProgressBar from "progressbar.js";
@@ -7,7 +6,6 @@ import ProgressBar from "progressbar.js";
 let progressbar;
 let blob;
 let blobURL;
-let avatar = {};
 
 const renderProgressBar = (container) => {
   container.classList.add("converting");
@@ -84,68 +82,6 @@ const fillImage = (context, image, scale, posX, posY, deg, width, height) => {
   context.restore();
 };
 
-const fillLaiAvatar = (context, index, scale) => {
-  const position = positions["avatar-lai"];
-  return new Promise((resolve) => {
-    if (!avatar["avatar-lai"]) {
-      resolve();
-    } else if (!position[index]) {
-      resolve();
-    } else if ((index < 116) || (index >= 130 && index < 163) || (index >= 177)) {
-      resolve();
-    } else {
-      const [x, y, deg] = position[index];
-      const img = new Image();
-      img.src = avatar["avatar-lai"];
-      img.onload = () => {
-        fillImage(context, img, scale, x, y, deg, 300, 300);
-        resolve();
-      };
-    }
-  });
-};
-
-const fillChengAvatar = (context, index, scale) => {
-  const position = positions["avatar-cheng"];
-  return new Promise((resolve) => {
-    if (!avatar["avatar-cheng"]) {
-      resolve();
-    } else if (!position[index]) {
-      resolve();
-    } else if ((index >= 116 && index < 130) || (index >= 163 && index < 177)) {
-      resolve();
-    } else {
-      const [x, y, deg] = position[index];
-      const img = new Image();
-      img.src = avatar["avatar-cheng"];
-      img.onload = () => {
-        fillImage(context, img, scale, x, y, deg, 225, 225);
-        resolve();
-      };
-    }
-  });
-};
-
-const fillLeungAvatar = (context, index, scale) => {
-  const position = positions["avatar-leung"];
-  return new Promise((resolve) => {
-    if (!avatar["avatar-leung"]) {
-      resolve();
-    } else if (!position[index]) {
-      resolve();
-    } else if ((index >= 116 && index < 130) || (index >= 163 && index < 177)) {
-      resolve();
-    } else {
-      const [x, y, deg] = position[index];
-      const img = new Image();
-      img.src = avatar["avatar-leung"];
-      img.onload = () => {
-        fillImage(context, img, scale, x, y, deg, 200, 200);
-        resolve();
-      };
-    }
-  });
-};
 
 const convertGif = (encoder, container, rate, scale, renderBtn, downloadBtn) => {
   
@@ -169,16 +105,10 @@ const convertGif = (encoder, container, rate, scale, renderBtn, downloadBtn) => 
       setProgressBar(index/images.length);
       context.clearRect(0, 0, canvas.width, canvas.height);
       context.drawImage(img, 0, 0, canvas.width, canvas.height);
-      fillLaiAvatar(context, index, scale).then(() => {
-        fillLeungAvatar(context, index, scale).then(() => {
-          fillChengAvatar(context, index, scale).then(() => {
-            fillSubtitle(context, getSubtitle(index), scale);
-            encoder.addFrame(context);
-            index += rate;
-            callback();
-          });
-        });
-      });
+        fillSubtitle(context, getSubtitle(index), scale);
+        encoder.addFrame(context);
+        index += rate;
+        callback();
     };
   };
 
@@ -229,10 +159,8 @@ document.addEventListener("DOMContentLoaded", (e) => {
   const container = document.getElementById("image-container");
   const renderBtn = document.getElementById("render-button");
   const downloadBtn = document.getElementById("download-button");
-  const avatarInputs = document.querySelectorAll(".avatar-container input[type=file]");
   const rateInputs = document.querySelectorAll(".options-container input[name=rate]");
   const scaleInputs = document.querySelectorAll(".options-container input[name=scale]");
-  const resetBtns = document.querySelectorAll(".avatar-container button");
   const highRateInput = document.getElementById("high-rate");
   const scale70Input = document.getElementById("scale-70");
 
@@ -244,29 +172,6 @@ document.addEventListener("DOMContentLoaded", (e) => {
 
   [...rateInputs].forEach((input) => input.addEventListener("change", estimateSize));
   [...scaleInputs].forEach((input) => input.addEventListener("change", estimateSize));
-  [...avatarInputs].forEach((input) => input.addEventListener("change", (e) => {
-    try {
-      const file = e.target.files[0];
-      const reader = new FileReader();
-      reader.onload = ((f) => {
-        const id = e.target.id;
-        const img = document.querySelector(`label[for=${id}] img`);
-        return (e) => {
-          img.setAttribute("src", e.target.result);
-          avatar[id] = e.target.result;
-        };
-      })(file);
-      reader.readAsDataURL(file);
-    } catch (e) {
-      console.error(e);
-    }
-  }));
-  [...resetBtns].forEach((btn) => btn.addEventListener("click", (e) => {
-    const id = e.target.getAttribute("for-id");
-    const img = document.querySelector(`label[for=${id}] img`);
-    img.setAttribute("src", img.getAttribute("data-src"));
-    avatar[id] = null;
-  }));
 
   renderBtn.addEventListener("click", (e) => {
     const rateInput = document.querySelector(".options-container input[name=rate]:checked");
@@ -281,7 +186,7 @@ document.addEventListener("DOMContentLoaded", (e) => {
     }
   });
 
-  tippy(".subtitle-container, .avatar-container, .options-container", {
+  tippy(".subtitle-container, .options-container", {
     placement: "left",
     arrow: true,
     size: "small",

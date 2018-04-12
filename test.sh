@@ -2,3 +2,4 @@
 
 cp -r ./docs/** $WWWROOT/pop-team-epic-gifs/
 chrome "http://localhost/pop-team-epic-gifs/"
+rm -rf ./docs
