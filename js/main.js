@@ -182,7 +182,7 @@ document.addEventListener("DOMContentLoaded", (e) => {
   });
   downloadBtn.addEventListener("click", (e) => {
     if (!!blob) {
-      FileSaver.saveAs(blob, "sorry.gif");
+      FileSaver.saveAs(blob, "run.gif");
     }
   });
 
