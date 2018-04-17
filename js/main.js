@@ -1,4 +1,5 @@
-import images from "./images";
+import eating from "./eating";
+import running from "./running";
 import tippy from 'tippy.js';
 import FileSaver from "file-saver";
 import ProgressBar from "progressbar.js";
@@ -100,9 +101,9 @@ const convertGif = (encoder, container, rate, scale, renderBtn, downloadBtn) => 
 
   const addFrame = (callback) => {
     const img = new Image();
-    img.src = images[index];
+    img.src = running[index];
     img.onload = () => {
-      setProgressBar(index/images.length);
+      setProgressBar(index/running.length);
       context.clearRect(0, 0, canvas.width, canvas.height);
       context.drawImage(img, 0, 0, canvas.width, canvas.height);
         fillSubtitle(context, getSubtitle(index), scale);
@@ -113,7 +114,7 @@ const convertGif = (encoder, container, rate, scale, renderBtn, downloadBtn) => 
   };
 
   const checkFinish = () => {
-    if (index < images.length) {
+    if (index < running.length) {
       addFrame(checkFinish);
     } else {
       encoder.finish();
@@ -182,11 +183,11 @@ document.addEventListener("DOMContentLoaded", (e) => {
   });
   downloadBtn.addEventListener("click", (e) => {
     if (!!blob) {
-      FileSaver.saveAs(blob, "run.gif");
+      FileSaver.saveAs(blob, "running.gif");
     }
   });
 
-  tippy(".subtitle-container, .options-container", {
+  tippy("#subtitle-container, .options-container", {
     placement: "left",
     arrow: true,
     size: "small",

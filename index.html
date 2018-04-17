@@ -3,16 +3,58 @@
     <title>Pop Team Epic生成器</title>
     <meta charset="utf8">
     <link rel="shortcut icon" href="./images/favicon.ico">
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script type="text/javascript" src="./LZWEncoder.js"></script>
     <script type="text/javascript" src="./NeuQuant.js"></script>
     <script type="text/javascript" src="./GIFEncoder.js"></script>
     <script type="text/javascript" src="./bundle.min.js"></script>   
+    <script>
+      $(document).ready(function(){
+          $("#gif-select").change(function(){
+            const labels = [ 
+              { "id": "subtitle01", "text": "第一句" },
+              { "id": "subtitle02", "text": "第二句" },
+              { "id": "subtitle03", "text": "第三句" },
+            ];
+            const gifs = {
+              "running": { "width": "399", "height": "224", 
+                "dialogues": ["要遲到了"]
+              },
+              "eating": { "width": "356", "height": "278",
+                "dialogues": ["我不客氣了", "食食食"]
+              }
+            };
+
+            // gif
+            $("#image-container img")
+              .attr("src", "images/" + this.value + ".gif")
+              .width(gifs[this.value].width)
+              .height(gifs[this.value].height);
+
+            // 對白
+            let $subtitle_container = $("#subtitle-container").empty();
+            for(var i = 0 ; i < gifs[this.value].dialogues.length; i++){
+              $subtitle_container.append(
+                $("<div>")
+                  .append($("<label>", { for: labels[i].id, text: labels[i].text }))
+                  .append($("<input>", { id: labels[i].id, type: "text", placeholder: gifs[this.value].dialogues[i] }))
+              );
+            }
+          });
+      });
+    </script>
   </head>
   <body>
     <div id="image-container">
-      <img src="./images/run.gif" />
+      <img src="./images/running.gif" />
     </div>
-    <div class="subtitle-container" title="在此欄可以加入角色對白">
+    <div>
+      <select id="gif-select">
+        <option value="running">Running</option>
+        <option value="eating">Eating</option>
+      </select>
+    </div>
+    <div id="subtitle-container" title="在此欄可以加入角色對白">
       <div><label for="subtitle01">第一句</label><input id="subtitle01" type="text" placeholder="要遲到了" /></div>
     </div>
     <div class="options-container" title="在此欄可以調整生成設定">
