@@ -8,6 +8,13 @@ import ProgressBar from "progressbar.js";
 let progressbar;
 let blob;
 let blobURL;
+const ids = {
+  "running": [{ "start": 10, "end": 15, "id": "subtitle01" }],
+  "eating": [
+    { "start": 1, "end": 4, "id": "subtitle01" },
+    { "start": 5, "end": 9, "id": "subtitle02" }
+  ]
+}
 
 const renderProgressBar = (container) => {
   container.classList.add("converting");
@@ -34,28 +41,13 @@ const setProgressBar = (progress) => {
 
 const getSubtitle = (gifName, index) => {
   let id;
-
-  switch(gifName){
-    case "running":
-      if (index >= 10 && index <= 15) id = "subtitle01";
+  for(let i = 0; i < ids[gifName].length; i++){
+    if(index >= ids[gifName][i].start && index <= ids[gifName][i].end){
+      id = ids[gifName][i].id;
       break;
-    case "eating":
-      if (index >= 1 && index <= 9) id = "subtitle01";
-      break;
-    default:
-      break;
+    }
   }
-  /*
-  if (index >= 10 && index <= 15) id = "subtitle01";
-  else if (index >= 31 && index <= 44) id = "subtitle02";
-  else if (index >= 51 && index <= 72) id = "subtitle03";
-  else if (index >= 72 && index <= 99) id = "subtitle04";
-  else if (index >= 100 && index <= 115) id = "subtitle05";
-  else if (index >= 116 && index <= 129) id = "subtitle06";
-  else if (index >= 136 && index <= 162) id = "subtitle07";
-  else if (index >= 180 && index <= 196) id = "subtitle08";
-  else if (index >= 196 && index <= 208) id = "subtitle09";
-*/
+  
   if (!!id) {
     const subtitle = document.getElementById(id);
     return subtitle.value || subtitle.placeholder;
