@@ -1,5 +1,3 @@
-import eating from "./eating";
-import running from "./running";
 import gifs from "./gifs";
 import tippy from 'tippy.js';
 import FileSaver from "file-saver";
@@ -13,7 +11,8 @@ const ids = {
   "eating": [
     { "start": 1, "end": 4, "id": "subtitle01" },
     { "start": 5, "end": 9, "id": "subtitle02" }
-  ]
+  ],
+  "brush-first": [{ "start": 2, "end": 5, "id": "subtitle01" }]
 }
 
 const renderProgressBar = (container) => {
@@ -47,7 +46,7 @@ const getSubtitle = (gifName, index) => {
       break;
     }
   }
-  
+
   if (!!id) {
     const subtitle = document.getElementById(id);
     return subtitle.value || subtitle.placeholder;
