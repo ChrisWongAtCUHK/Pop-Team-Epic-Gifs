@@ -1,5 +1,6 @@
 import eating from "./eating";
 import running from "./running";
+import gifs from "./gifs";
 import tippy from 'tippy.js';
 import FileSaver from "file-saver";
 import ProgressBar from "progressbar.js";
@@ -101,9 +102,9 @@ const convertGif = (encoder, container, rate, scale, renderBtn, downloadBtn) => 
 
   const addFrame = (callback) => {
     const img = new Image();
-    img.src = running[index];
+    img.src = gifs["running"][index];
     img.onload = () => {
-      setProgressBar(index/running.length);
+      setProgressBar(index/gifs["running"].length);
       context.clearRect(0, 0, canvas.width, canvas.height);
       context.drawImage(img, 0, 0, canvas.width, canvas.height);
         fillSubtitle(context, getSubtitle(index), scale);
@@ -114,7 +115,7 @@ const convertGif = (encoder, container, rate, scale, renderBtn, downloadBtn) => 
   };
 
   const checkFinish = () => {
-    if (index < running.length) {
+    if (index < gifs["running"].length) {
       addFrame(checkFinish);
     } else {
       encoder.finish();
@@ -156,6 +157,10 @@ const estimateSize = () => {
   fileSizeInput.value = `~${filesize}MB`;
 };
 
+const getSelectedGif = () => {
+  return document.querySelectorAll("#gif-select option:checked")[0].value;
+};
+
 document.addEventListener("DOMContentLoaded", (e) => {
   const container = document.getElementById("image-container");
   const renderBtn = document.getElementById("render-button");
@@ -183,7 +188,8 @@ document.addEventListener("DOMContentLoaded", (e) => {
   });
   downloadBtn.addEventListener("click", (e) => {
     if (!!blob) {
-      FileSaver.saveAs(blob, "running.gif");
+      const gifName = getSelectedGif();
+      FileSaver.saveAs(blob,  gifName + ".gif");
     }
   });
 
