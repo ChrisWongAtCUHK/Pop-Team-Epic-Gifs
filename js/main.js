@@ -32,9 +32,20 @@ const setProgressBar = (progress) => {
   }
 };
 
-const getSubtitle = (index) => {
+const getSubtitle = (gifName, index) => {
   let id;
 
+  switch(gifName){
+    case "running":
+      if (index >= 10 && index <= 15) id = "subtitle01";
+      break;
+    case "eating":
+      if (index >= 1 && index <= 9) id = "subtitle01";
+      break;
+    default:
+      break;
+  }
+  /*
   if (index >= 10 && index <= 15) id = "subtitle01";
   else if (index >= 31 && index <= 44) id = "subtitle02";
   else if (index >= 51 && index <= 72) id = "subtitle03";
@@ -44,7 +55,7 @@ const getSubtitle = (index) => {
   else if (index >= 136 && index <= 162) id = "subtitle07";
   else if (index >= 180 && index <= 196) id = "subtitle08";
   else if (index >= 196 && index <= 208) id = "subtitle09";
-
+*/
   if (!!id) {
     const subtitle = document.getElementById(id);
     return subtitle.value || subtitle.placeholder;
@@ -53,7 +64,7 @@ const getSubtitle = (index) => {
   }
 };
 
-const fillSubtitle = (context, subtitle, scale) => {
+const fillSubtitle = (context, subtitle, scale, imgWidth, imgHeight) => {
   if (!!subtitle) {
     context.font = `${28*scale}px Arial`;
     context.textAlign = "center";
@@ -63,10 +74,10 @@ const fillSubtitle = (context, subtitle, scale) => {
     context.shadowBlur = 2 * scale;
     context.lineWidth = 3 * scale;
     context.fillStyle = "black";
-    context.strokeText(subtitle, 570 * scale / 2, 300 * scale);
+    context.strokeText(subtitle, imgWidth / 2, imgHeight - (20 * scale));
     context.fillStyle = "#d4d4d4";
     context.shadowBlur = 0;
-    context.fillText(subtitle, 570 * scale / 2, 300 * scale);
+    context.fillText(subtitle, imgWidth / 2, imgHeight - (20 * scale));
   }
 };
 
@@ -85,16 +96,20 @@ const fillImage = (context, image, scale, posX, posY, deg, width, height) => {
 };
 
 
-const convertGif = (encoder, container, rate, scale, renderBtn, downloadBtn) => {
+const convertGif = (encoder, container, rate, scale, renderBtn, downloadBtn, gifName) => {
   
   const canvas = document.createElement("canvas");
-  canvas.setAttribute("width", 570 * scale);
-  canvas.setAttribute("height", 320 * scale);
+  const img = document.querySelector("#image-container img");
+  const imgWidth = Math.round(img.width * scale);
+  const imgHeight = Math.round(img.height * scale);
+
+  canvas.setAttribute("width", imgWidth);
+  canvas.setAttribute("height", imgHeight);
   const context = canvas.getContext("2d");
 
   encoder.setRepeat(0);
   encoder.setDelay(100 * rate);
-  encoder.setSize(570 * scale, 320 * scale);
+  encoder.setSize(imgWidth, imgHeight);
   encoder.setQuality(20);
   encoder.start();
 
@@ -102,12 +117,12 @@ const convertGif = (encoder, container, rate, scale, renderBtn, downloadBtn) => 
 
   const addFrame = (callback) => {
     const img = new Image();
-    img.src = gifs["running"][index];
+    img.src = gifs[gifName][index];
     img.onload = () => {
-      setProgressBar(index/gifs["running"].length);
+      setProgressBar(index/gifs[gifName].length);
       context.clearRect(0, 0, canvas.width, canvas.height);
       context.drawImage(img, 0, 0, canvas.width, canvas.height);
-        fillSubtitle(context, getSubtitle(index), scale);
+        fillSubtitle(context, getSubtitle(gifName, index), scale, imgWidth, imgHeight);
         encoder.addFrame(context);
         index += rate;
         callback();
@@ -115,7 +130,7 @@ const convertGif = (encoder, container, rate, scale, renderBtn, downloadBtn) => 
   };
 
   const checkFinish = () => {
-    if (index < gifs["running"].length) {
+    if (index < gifs[gifName].length) {
       addFrame(checkFinish);
     } else {
       encoder.finish();
@@ -184,7 +199,8 @@ document.addEventListener("DOMContentLoaded", (e) => {
     const scaleInput = document.querySelector(".options-container input[name=scale]:checked");
     renderBtn.disabled = true;
     renderProgressBar(container);
-    convertGif(new GIFEncoder(), container, (rateInput.value || 1)-0, (scaleInput.value || 1)-0, renderBtn, downloadBtn);
+    const gifName = getSelectedGif();
+    convertGif(new GIFEncoder(), container, (rateInput.value || 1)-0, (scaleInput.value || 1)-0, renderBtn, downloadBtn, gifName);
   });
   downloadBtn.addEventListener("click", (e) => {
     if (!!blob) {
