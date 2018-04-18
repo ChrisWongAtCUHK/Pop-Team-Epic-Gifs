@@ -99,9 +99,9 @@ const fillImage = (context, image, scale, posX, posY, deg, width, height) => {
 const convertGif = (encoder, container, rate, scale, renderBtn, downloadBtn, gifName) => {
   
   const canvas = document.createElement("canvas");
-  const img = document.querySelector("#image-container img");
-  const imgWidth = Math.round(img.width * scale);
-  const imgHeight = Math.round(img.height * scale);
+  const image = document.querySelector("#image-container img");
+  const imgWidth = Math.round(image.width * scale);
+  const imgHeight = Math.round(image.height * scale);
 
   canvas.setAttribute("width", imgWidth);
   canvas.setAttribute("height", imgHeight);
@@ -147,6 +147,7 @@ const convertGif = (encoder, container, rate, scale, renderBtn, downloadBtn, gif
 
       img.setAttribute("src", blobURL);
       img.setAttribute("alt", "瀏覽器不支援此圖片檔案大小，請調整運算設定");
+      img.setAttribute("style", "width: " + image.width + "px; height: " + image.height + "px;");
       container.classList.remove("converting");
       container.innerHTML = "";
       container.appendChild(img);
