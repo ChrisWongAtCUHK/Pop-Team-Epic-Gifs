@@ -12,7 +12,8 @@ const ids = {
     { "start": 1, "end": 4, "id": "subtitle01" },
     { "start": 5, "end": 9, "id": "subtitle02" }
   ],
-  "brush-first": [{ "start": 2, "end": 5, "id": "subtitle01" }]
+  "brush-first": [{ "start": 2, "end": 5, "id": "subtitle01" }],
+  "your-name": [{ "start": 2, "end": 15, "id": "subtitle01" }]
 }
 
 const renderProgressBar = (container) => {
