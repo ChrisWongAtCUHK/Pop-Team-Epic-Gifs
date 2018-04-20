@@ -22,9 +22,10 @@
       <div id="gif-select-container">
         <div id="image-container">
           <!-- computed property gif -->
-          <img :src="gif" />
+          <img id="gif" :src="gif" />
+          <img id="converted-gif"/>
         </div>
-        <b-select id="gif-select" v-model="selected" :options="options" class="mb-3">
+        <b-select id="gif-select" v-model="selected" :options="options" @change="onChange()" class="mb-3">
         </b-select>
         
         <div id="subtitle-container" title="在此欄可以加入角色對白">

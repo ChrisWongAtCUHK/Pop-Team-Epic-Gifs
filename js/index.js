@@ -46,5 +46,15 @@ new Vue({
             }
             return arr;
         }
+    },
+    methods:{
+        onChange: function(){
+            // trick to restore broken data binding
+            let cgif = document.getElementById("converted-gif");
+            cgif.style.display = "none";
+
+            let gif = document.getElementById("gif");
+            gif.style.display = "block";
+        }
     }
 });

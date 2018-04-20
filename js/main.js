@@ -127,7 +127,11 @@ const convertGif = (encoder, container, rate, scale, renderBtn, downloadBtn, gif
     } else {
       encoder.finish();
 
-      const img = document.createElement("img");
+      const gif = document.getElementById("gif");
+      gif.style.display = "none";
+
+      const img = document.getElementById("converted-gif");
+
       // TODO:
       // some browser does not support base64 encoded images with large size.
       // ... at least it doesnt work on my ipad
@@ -140,10 +144,14 @@ const convertGif = (encoder, container, rate, scale, renderBtn, downloadBtn, gif
       img.setAttribute("src", blobURL);
       img.setAttribute("alt", "瀏覽器不支援此圖片檔案大小，請調整運算設定");
       img.setAttribute("style", "width: " + image.width + "px; height: " + image.height + "px;");
+      img.style.display = "block";
+
       container.classList.remove("converting");
       container.innerHTML = "";
+      
+      container.appendChild(gif);
       container.appendChild(img);
-
+      
       renderBtn.disabled = false;
       downloadBtn.disabled = false;
     }
