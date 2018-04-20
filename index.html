@@ -21,10 +21,12 @@
   <body>
       <div id="gif-select">
         <div id="image-container">
-          <img src="./images/running.gif" />
+          <!-- computed property -->
+          <img :src="gif" />
         </div>
         <b-select v-model="selected" :options="options" class="mb-3">
         </b-select>
+        
         <div id="subtitle-container" title="在此欄可以加入角色對白">
           <div><label for="subtitle01">第一句</label><input id="subtitle01" type="text" placeholder="要遲到了" /></div>
         </div>

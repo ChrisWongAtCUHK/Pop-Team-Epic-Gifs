@@ -41,5 +41,10 @@ new Vue({
     data: {
         selected: options[0].value,
         options: options
+    },
+    computed: {
+        gif: function() {
+            return "./images/" + this.selected.gifName + ".gif";
+        }
     }
 });
