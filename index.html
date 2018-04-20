@@ -19,12 +19,12 @@
     <script type="text/javascript" src="./bundle.min.js"></script>   
   </head>
   <body>
-      <div id="gif-select">
+      <div id="gif-select-container">
         <div id="image-container">
           <!-- computed property gif -->
           <img :src="gif" />
         </div>
-        <b-select v-model="selected" :options="options" class="mb-3">
+        <b-select id="gif-select" v-model="selected" :options="options" class="mb-3">
         </b-select>
         
         <div id="subtitle-container" title="在此欄可以加入角色對白">
