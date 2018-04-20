@@ -21,14 +21,18 @@
   <body>
       <div id="gif-select">
         <div id="image-container">
-          <!-- computed property -->
+          <!-- computed property gif -->
           <img :src="gif" />
         </div>
         <b-select v-model="selected" :options="options" class="mb-3">
         </b-select>
         
         <div id="subtitle-container" title="在此欄可以加入角色對白">
-          <div><label for="subtitle01">第一句</label><input id="subtitle01" type="text" placeholder="要遲到了" /></div>
+           <!-- computed property subtitles -->
+          <div v-for="subtitle in subtitles">
+            <label :for="subtitle.id">{{ subtitle.text }}</label>
+            <input :id="subtitle.id" type="text" :placeholder="subtitle.placeholder" />
+          </div>
         </div>
     </div>
     <div class="options-container" title="在此欄可以調整生成設定">

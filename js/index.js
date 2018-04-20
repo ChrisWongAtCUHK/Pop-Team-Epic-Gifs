@@ -45,6 +45,19 @@ new Vue({
     computed: {
         gif: function() {
             return "./images/" + this.selected.gifName + ".gif";
+        },
+        subtitles: function(){
+            const labels = [ 
+                { "id": "subtitle01", "text": "第一句" },
+                { "id": "subtitle02", "text": "第二句" },
+                { "id": "subtitle03", "text": "第三句" },
+            ];
+
+            let arr = [];
+            for(let i = 0; i < this.selected.dialogues.length; i++){
+                arr.push({ id: labels[i].id, text: labels[i].text, placeholder: this.selected.dialogues[i] });
+            }
+            return arr;
         }
     }
 });
