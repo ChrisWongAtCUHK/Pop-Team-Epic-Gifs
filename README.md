@@ -1,6 +1,7 @@
 # pop-team-epic-gifs
+Start from [Sorry 有錢真係可以為所欲為生成器](https://github.com/ShawTim/sorry-rich-can-do-everything)
 
-![Introduction](https://shawtim.github.io/sorry-rich-can-do-everything/intro.png)
+See [demo](https://chriswongatcuhk.github.io/Pop-Team-Epic-Gifs/) on Github page.
 
 ### Installation
 `npm i`
