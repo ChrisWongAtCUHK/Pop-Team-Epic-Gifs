@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "scripts": {
     "build": "webpack -p",
+    "dev": "webpack -w",
     "test": "sh ./test.sh"
   },
   "repository": {
