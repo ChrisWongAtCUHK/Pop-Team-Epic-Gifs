@@ -1,0 +1,70 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:fb="http://ogp.me/ns/fb#">
+  <head>
+    <title>Pop Team Epic生成器</title>
+    <meta charset="utf8">
+    <link rel="shortcut icon" href="./images/favicon.ico">
+
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/vue/2.4.0/vue.js"></script>
+    <!-- Add this to <head> -->
+    <link type="text/css" rel="stylesheet" href="//unpkg.com/bootstrap/dist/css/bootstrap.min.css" />
+    <link type="text/css" rel="stylesheet" href="//unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.css" />
+
+    <!-- Add this after vue.js -->
+    <script src="//unpkg.com/babel-polyfill@latest/dist/polyfill.min.js"></script>
+    <script src="//unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.js"></script>
+
+    <script type="text/javascript" src="./LZWEncoder.js"></script>
+    <script type="text/javascript" src="./NeuQuant.js"></script>
+    <script type="text/javascript" src="./GIFEncoder.js"></script>
+    <script type="text/javascript" src="./bundle.min.js"></script>   
+  </head>
+  <body>
+      <div id="gif-select-container">
+        <div id="image-container">
+          <!-- computed property gif -->
+          <img id="gif" :src="gif" />
+          <img id="converted-gif"/>
+        </div>
+        <b-select id="gif-select" v-model="selected" :options="options" @change="onChange()" class="mb-3">
+        </b-select>
+        
+        <div id="subtitle-container" title="在此欄可以加入角色對白">
+           <!-- computed property subtitles -->
+          <div v-for="subtitle in subtitles">
+            <label :for="subtitle.id">{{ subtitle.text }}</label>
+            <input :id="subtitle.id" type="text" :placeholder="subtitle.placeholder" />
+          </div>
+        </div>
+    </div>
+    <div class="options-container" title="在此欄可以調整生成設定">
+      <div>
+        <span>流暢度</span>
+        <input type="radio" name="rate" id="high-rate" value="1"/>
+        <label for="high-rate">正常</label>
+        <input type="radio" name="rate" id="low-rate" value="2"/>
+        <label for="low-rate">低</label>
+      </div>
+      <div>
+        <span>圖片大小</span>
+        <input type="radio" name="scale" id="scale-100" value="1"/>
+        <label for="scale-100">100%</label>
+        <input type="radio" name="scale" id="scale-70" value="0.7"/>
+        <label for="scale-70">70%</label>
+        <input type="radio" name="scale" id="scale-50" value="0.5"/>
+        <label for="scale-50">50%</label>
+      </div>
+      <div class="info">
+        <label for="file-size">預計檔案大小︰</label>
+        <input type="text" id="file-size" value="" readonly />
+      </div>
+      <div class="info">
+        <span class="warning-text">*請衡量使用設備及瀏覽器運算強度作調整</span>
+      </div>
+    </div>
+    <div class="convert-button">
+      <button id="render-button">生成</button>
+      <button id="download-button">下載</button>
+    </div>
+    <script type="text/javascript" src="./index.js"></script>
+  </body>
+</html>
