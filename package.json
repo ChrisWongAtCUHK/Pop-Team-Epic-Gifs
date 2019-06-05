@@ -2,8 +2,9 @@
   "name": "pop-team-epic-gifs",
   "version": "1.0.0",
   "scripts": {
-    "build": "webpack -p",
     "dev": "webpack -w",
+    "predeploy": "webpack -p",
+    "deploy": "gh-pages -d docs",
     "test": "sh ./test.sh"
   },
   "repository": {
@@ -20,6 +21,7 @@
     "copy-webpack-plugin": "^4.4.1",
     "css-loader": "^0.28.9",
     "file-saver": "^1.3.8",
+    "gh-pages": "^2.0.1",
     "node-sass": "^4.7.2",
     "progressbar.js": "^1.0.1",
     "sass-loader": "^6.0.6",
