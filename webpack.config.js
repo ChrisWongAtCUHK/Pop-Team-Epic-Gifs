@@ -13,6 +13,7 @@ module.exports = {
       { from: '*.png' },
       { from: '*.jpg' },
       { from: './js/index.js' },
+      { from: './js/main.js' },
       { from: './js/LZWEncoder.js' },
       { from: './js/NeuQuant.js' },
       { from: './js/GIFEncoder.js' },

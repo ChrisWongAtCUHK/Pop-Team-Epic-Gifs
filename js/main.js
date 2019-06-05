@@ -143,7 +143,7 @@ const convertGif = (encoder, container, rate, scale, renderBtn, downloadBtn, gif
 
       img.setAttribute("src", blobURL);
       img.setAttribute("alt", "瀏覽器不支援此圖片檔案大小，請調整運算設定");
-      img.setAttribute("style", "width: " + image.width + "px; height: " + image.height + "px;");
+      img.setAttribute("style", "width: " + container.style.width + "px; height: " + container.style.height + "px;");
       img.style.display = "block";
 
       container.classList.remove("converting");
