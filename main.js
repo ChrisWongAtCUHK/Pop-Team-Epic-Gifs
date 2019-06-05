@@ -87,13 +87,17 @@ const fillImage = (context, image, scale, posX, posY, deg, width, height) => {
   context.restore();
 };
 
+const loadGifDimension = () => {
+  const image = new Image();
+  const gifName = getSelectedGif();
+  image.src = gifs[gifName][0];
+  image.onload = () => {
 
-const convertGif = (encoder, container, rate, scale, renderBtn, downloadBtn, gifName) => {
-  
+  };
+};
+
+const convertGif = (encoder, container, rate, scale, renderBtn, downloadBtn, gifName, imgWidth, imgHeight) => {  
   const canvas = document.createElement("canvas");
-  const image = document.querySelector("#image-container img");
-  const imgWidth = Math.round(image.width * scale);
-  const imgHeight = Math.round(image.height * scale);
 
   canvas.setAttribute("width", imgWidth);
   canvas.setAttribute("height", imgHeight);
@@ -114,10 +118,10 @@ const convertGif = (encoder, container, rate, scale, renderBtn, downloadBtn, gif
       setProgressBar(index/gifs[gifName].length);
       context.clearRect(0, 0, canvas.width, canvas.height);
       context.drawImage(img, 0, 0, canvas.width, canvas.height);
-        fillSubtitle(context, getSubtitle(gifName, index), scale, imgWidth, imgHeight);
-        encoder.addFrame(context);
-        index += rate;
-        callback();
+      fillSubtitle(context, getSubtitle(gifName, index), scale, imgWidth, imgHeight);
+      encoder.addFrame(context);
+      index += rate;
+      callback();
     };
   };
 
@@ -143,7 +147,7 @@ const convertGif = (encoder, container, rate, scale, renderBtn, downloadBtn, gif
 
       img.setAttribute("src", blobURL);
       img.setAttribute("alt", "瀏覽器不支援此圖片檔案大小，請調整運算設定");
-      img.setAttribute("style", "width: " + container.style.width + "px; height: " + container.style.height + "px;");
+      img.setAttribute("style", "width: " + imgWidth + "px; height: " + imgHeight + "px;");
       img.style.display = "block";
 
       container.classList.remove("converting");
@@ -200,8 +204,17 @@ document.addEventListener("DOMContentLoaded", (e) => {
     const scaleInput = document.querySelector(".options-container input[name=scale]:checked");
     renderBtn.disabled = true;
     renderProgressBar(container);
+    const image = new Image();
     const gifName = getSelectedGif();
-    convertGif(new GIFEncoder(), container, (rateInput.value || 1)-0, (scaleInput.value || 1)-0, renderBtn, downloadBtn, gifName);
+    // by default, use the first frame
+    image.src = gifs[gifName][0];
+    image.onload = () => {
+      const gifName = getSelectedGif();
+      const scale = (scaleInput.value || 1)-0;
+      const imgWidth = Math.round(image.width * scale);
+      const imgHeight = Math.round(image.height * scale);
+      convertGif(new GIFEncoder(), container, (rateInput.value || 1)-0, scale, renderBtn, downloadBtn, gifName, imgWidth, imgHeight);
+    };
   });
   downloadBtn.addEventListener("click", (e) => {
     if (!!blob) {
