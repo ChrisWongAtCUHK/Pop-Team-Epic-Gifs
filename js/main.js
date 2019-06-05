@@ -6,9 +6,6 @@ import ProgressBar from "progressbar.js";
 let progressbar;
 let blob;
 let blobURL;
-let image1Width;
-let image1Height;
-const image1 = new Image();
 const ids = {
   "running": [{ "start": 10, "end": 15, "id": "subtitle01" }],
   "eating": [
@@ -111,7 +108,7 @@ const convertGif = (encoder, container, rate, scale, renderBtn, downloadBtn, gif
   encoder.setSize(imgWidth, imgHeight);
   encoder.setQuality(20);
   encoder.start();
-  
+
   let index = 0;
 
   const addFrame = (callback) => {
@@ -196,12 +193,6 @@ document.addEventListener("DOMContentLoaded", (e) => {
   downloadBtn.disabled = true;
   highRateInput.checked = true;
   scale70Input.checked = true;
-  const gifName = getSelectedGif();
-  image1.src = gifs[gifName][0];
-  image1.onload = () => {
-    image1Width = image1.width;
-    image1Height = image1.height;
-  };
 
   estimateSize();
 
@@ -215,6 +206,7 @@ document.addEventListener("DOMContentLoaded", (e) => {
     renderProgressBar(container);
     const image = new Image();
     const gifName = getSelectedGif();
+    // by default, use the first frame
     image.src = gifs[gifName][0];
     image.onload = () => {
       const gifName = getSelectedGif();
