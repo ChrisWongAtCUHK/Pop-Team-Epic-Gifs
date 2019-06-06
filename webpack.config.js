@@ -25,22 +25,23 @@ module.exports = {
     ])
   ],
   module: {
-    loaders: [{
+    rules: [{
       test: /\.(s)*css$/,
-      loaders: [
+      use: [
         'style-loader',
         'css-loader',
         'sass-loader'
       ]
     }, {
       test: /\.(jpg|png)$/,
-      loaders: [
+      use: [
         'url-loader'
       ]
     }, {
       test: /\.js$/,
-      loaders: [
-        'babel-loader?presets[]=es2015'
+      exclude: /node_modules/,
+      use: [
+        'babel-loader'
       ]
     }]
   }
